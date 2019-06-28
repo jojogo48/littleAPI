@@ -64,4 +64,31 @@
         $this->category_id=$row['category_id'];
         $this->category_name=$row['category_name'];
         }
+        public function create(){
+        $query='INSERT INTO '.$this->table.'(title,body,author,category_id)
+            Value(
+                :title,
+                :body,
+                :author,
+                :category_id
+            )
+            ';
+        //prepare statement
+        $stmt=$this->conn->prepare($query);
+
+        //bind parameter and clean data
+        $stmt->bindParam(':title',htmlspecialchars(strip_tags($this->title)));
+        $stmt->bindParam(':body',htmlspecialchars(strip_tags($this->body)));
+        $stmt->bindParam(':author',htmlspecialchars(strip_tags($this->author)));
+        $stmt->bindParam(':category_id',htmlspecialchars(strip_tags($this->category_id)));
+
+        //print error if go wrong
+        if($stmt->execute()){
+            var_dump($stamt);
+            return true;
+        }
+
+        echo 'error: '.$stmt->error;
+        return false ;
+        }
     }
